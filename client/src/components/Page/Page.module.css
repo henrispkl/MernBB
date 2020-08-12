@@ -1,0 +1,17 @@
+.MainLayout {
+  padding: 0 100px;
+  position: relative;
+  z-index: 1;
+}
+
+.HeaderImage {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: -1;
+  background-image: url('../../assets//header.png');
+  background-size: 100%;
+  background-position-y: 50%;
+  height: 222px;
+  width: 100%;
+}

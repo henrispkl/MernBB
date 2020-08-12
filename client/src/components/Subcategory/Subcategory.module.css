@@ -1,0 +1,68 @@
+.Subcategory td {
+  padding: 30px;
+}
+
+.Info {
+  display: flex;
+  align-items: center;
+}
+
+.Icon {
+  font-size: 2em;
+  background-color: #40a9ff;
+  border-radius: 100%;
+  color: white;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 15px;
+}
+
+.Text {
+  display: flex;
+  flex-direction: column;
+  font-size: 16px;
+}
+
+.Name {
+  color: #120338;
+}
+
+.Desc {
+  color: #8c8c8c;
+}
+
+.Topics,
+.Posts {
+  width: 10%;
+  text-align: center;
+  padding: 30px 5px !important;
+  color: #8c8c8c;
+  font-size: 18px;
+}
+
+.Lastpost {
+  display: flex;
+  font-size: 16px;
+}
+
+.LastpostAvatar {
+  display: flex;
+  align-items: center;
+}
+
+.LastpostAvatar img {
+  width: 48px;
+  height: 48px;
+  border-radius: 100%;
+}
+
+.LastpostContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 15px;
+  color: #8c8c8c;
+}

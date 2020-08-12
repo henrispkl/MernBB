@@ -1,0 +1,11 @@
+@import '~antd/dist/antd.css';
+
+.logo {
+  font-size: 2em;
+  color: #120338;
+  font-weight: bold;
+}
+
+.navBarMenu {
+  float: right;
+}

@@ -25,6 +25,7 @@ app.use('/api/categories', controllers.categoryController);
 app.use('/api/subcategories', controllers.subcategoryController);
 app.use('/api/topics', controllers.topicController);
 app.use('/api/posts', controllers.postController);
+app.use('/api/stats', controllers.statsController);
 
 // MongoDB connection
 const connectDb = () => {

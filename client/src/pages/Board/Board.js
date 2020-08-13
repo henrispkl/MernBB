@@ -7,17 +7,29 @@ import styles from './Board.module.css';
 import Category from '../../components/Category/Category';
 
 // antd
-const { Title } = Typography;
+const { Title, Link } = Typography;
 
 const Forum = () => {
   const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState({});
+  const [loadingCategories, setLoadingCategories] = useState(true);
+  const [loadingStats, setLoadingStats] = useState(true);
 
   useEffect(() => {
     API.get('/categories')
       .then(result => {
-        setLoading(false);
+        setLoadingCategories(false);
         setCategories(result.data.categories);
+        return API.get('/stats');
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    API.get('/stats')
+      .then(result => {
+        setLoadingStats(false);
+        setStats(result.data);
       })
       .catch(err => {
         console.log(err);
@@ -31,7 +43,7 @@ const Forum = () => {
       </Row>
       <Row>
         <Col span={18}>
-          {loading ? (
+          {loadingCategories ? (
             <div className={styles.LoadingCategories}>
               <Skeleton active />
               <Skeleton className={styles.Skeleton} active />
@@ -43,7 +55,38 @@ const Forum = () => {
             })
           )}
         </Col>
-        <Col span={6}>Side</Col>
+        <Col span={5} offset={1}>
+          <div className={styles.Widget}>
+            <div className={styles.WidgetTitle}>Statistics</div>
+
+            {loadingStats ? (
+              <div className={styles.StatsLoading}>
+                <Skeleton active />
+              </div>
+            ) : (
+              <div className={styles.Stats}>
+                <div className={styles.Stat}>
+                  <div className={styles.StatNumber}>{stats.topics}</div>
+                  <div className={styles.StatText}>topics</div>
+                </div>
+                <div className={styles.Stat}>
+                  <div className={styles.StatNumber}>{stats.posts}</div>
+                  <div className={styles.StatText}>posts</div>
+                </div>
+                <div className={styles.Stat}>
+                  <div className={styles.StatNumber}>{stats.users}</div>
+                  <div className={styles.StatText}>users</div>
+                </div>
+                <div className={styles.Stat}>
+                  <div className={styles.NewestUserStat}>
+                    <Link href="/">{stats.newestuser}</Link>
+                  </div>
+                  <div className={styles.StatText}>newest user</div>
+                </div>
+              </div>
+            )}
+          </div>
+        </Col>
       </Row>
     </Page>
   );

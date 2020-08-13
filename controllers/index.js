@@ -4,6 +4,7 @@ const categoryController = require('./category.controller');
 const subcategoryController = require('./subcategory.controller');
 const topicController = require('./topic.controller');
 const postController = require('./post.controller');
+const statsController = require('./stats.controller');
 
 module.exports = {
   userController,
@@ -12,4 +13,5 @@ module.exports = {
   subcategoryController,
   topicController,
   postController,
+  statsController,
 };

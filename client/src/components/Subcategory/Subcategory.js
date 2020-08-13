@@ -47,7 +47,9 @@ const Category = props => {
           <img alt="" src={NoAvatar} />
         </div>
         <div className={styles.LastpostContent}>
-          <Link href="/">{props.data.lastpost.author.username}</Link>
+          <Link href="/" style={{ alignSelf: 'flex-start' }}>
+            {props.data.lastpost.author.username}
+          </Link>
           <div className={styles.LastPostDate}>{lastPostDateContent}</div>
         </div>
       </td>

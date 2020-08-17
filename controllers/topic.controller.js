@@ -9,10 +9,6 @@ const Topic = require('../models/Topic');
 const Post = require('../models/Post');
 const User = require('../models/User');
 
-topicController.get('/', (req, res) => {
-  Topic.find().then(topics => res.status(200).json({ topics }));
-});
-
 // [/api/topics] /:id
 // GET (PUBLIC)
 // get info from a single topic

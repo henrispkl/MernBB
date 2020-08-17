@@ -1,0 +1,15 @@
+.LogoContainer {
+  display: flex;
+  align-items: flex-start;
+}
+
+.Logo {
+  color: #120338;
+  font-weight: bold;
+  cursor: pointer;
+  font-size: 2em;
+}
+
+.HeaderMenu {
+  float: right;
+}

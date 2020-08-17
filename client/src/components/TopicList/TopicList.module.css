@@ -1,0 +1,73 @@
+.TopicList {
+  background-color: white;
+  width: 100%;
+  border-radius: 3px;
+  box-shadow: 0 0 10px #00276617;
+}
+
+.TopicList th {
+  font-size: 16px;
+  padding: 15px 30px;
+  color: #120338;
+}
+
+.Body td {
+  padding: 20px;
+}
+
+.TopicList tr {
+  border-bottom: 2px solid #fafafa;
+}
+
+.Body tr:last-of-type {
+  border-bottom: none;
+}
+
+.Name {
+  width: 60%;
+}
+
+.LastPost {
+  width: 20%;
+}
+
+.Posts,
+.LastPost {
+  padding: 15px 5px !important;
+}
+
+.Posts {
+  text-align: center;
+}
+
+.TopicInfo {
+  display: flex;
+}
+
+.TopicIcon {
+  font-size: 32px;
+  color: #1890ff;
+}
+
+.TopicNameContainer {
+  margin-left: 10px;
+}
+
+.TopicName {
+  font-size: 16px;
+}
+
+.TopicSubtitle {
+  color: #8c8c8c;
+}
+
+.TopicPosts {
+  text-align: center;
+  padding: 20px 5px !important;
+  color: #8c8c8c;
+  font-size: 18px;
+}
+
+.TopicLastpost {
+  padding: 20px 10px !important;
+}

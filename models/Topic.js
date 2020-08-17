@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
+const shortid = require('shortid');
 
 const topicSchema = new mongoose.Schema(
   {
+    shortid: {
+      type: String,
+      unique: true,
+      default: shortid.generate,
+    },
     title: {
       type: String,
       required: true,

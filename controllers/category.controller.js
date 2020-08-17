@@ -13,7 +13,7 @@ const Post = require('../models/Post');
 categoryController.get('/', (req, res) => {
   Category.find()
     .lean()
-    .populate('subcategories', 'name description')
+    .populate('subcategories', 'name description shortid')
     .then(categories => {
       // Loop through each category
       categories.forEach(category => {

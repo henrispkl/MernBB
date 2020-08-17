@@ -1,3 +1,7 @@
+.Page {
+  min-height: 500px;
+}
+
 .MainLayout {
   padding: 0 100px;
   position: relative;

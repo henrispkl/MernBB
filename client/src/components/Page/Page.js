@@ -3,7 +3,7 @@ import styles from './Page.module.css';
 
 const Page = props => {
   return (
-    <div>
+    <div className={styles.Page}>
       <div className={styles.MainLayout}>
         <div className={styles.HeaderImage} />
         {props.children}

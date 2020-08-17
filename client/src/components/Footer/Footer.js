@@ -55,13 +55,13 @@ const Footer = () => {
               <br />
             </Col>
             <Col span={12}>
-              <Title level={4}>About the creator</Title>
+              <Title level={4}>About the project</Title>
               <Link href="/">
                 <BranchesOutlined /> GitHub repositoy
               </Link>
               <br />
               <Link href="https://github.com/henrispkl">
-                <GithubOutlined /> GitHub profile
+                <GithubOutlined /> My GitHub profile
               </Link>
             </Col>
           </Row>

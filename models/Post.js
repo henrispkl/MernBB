@@ -1,7 +1,13 @@
 const mongoose = require('mongoose');
+const shortid = require('shortid');
 
 const postSchema = new mongoose.Schema(
   {
+    shortid: {
+      type: String,
+      unique: true,
+      default: shortid.generate,
+    },
     message: {
       type: String,
       required: true,

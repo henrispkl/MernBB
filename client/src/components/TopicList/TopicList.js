@@ -23,34 +23,37 @@ const TopicList = props => {
     totalPages: null,
   });
 
+  // Initial load
+  useEffect(() => {
+    API.get(`/subcategories/${props.id}/topics`)
+      .then(result => {
+        setTopics(result.data.topics);
+        setPages(prevPages => ({
+          ...prevPages,
+          currentPage: result.data.currentPage,
+          totalPages: result.data.totalPages * 10,
+        }));
+        setContentLoading(false);
+        setLoading(false);
+      })
+      .catch(e => console.log(e));
+  }, [props.id, setContentLoading]);
+
   const fetchPage = page => {
     setLoading(true);
 
-    API.get(`/subcategories/${props.id}/topics?page=${page}`).then(result => {
-      console.log(result.data);
-      setTopics(result.data.topics);
-      setPages(prevPages => ({
-        ...prevPages,
-        currentPage: result.data.currentPage,
-        totalPages: result.data.totalPages * 10,
-      }));
-      setLoading(false);
-    });
+    API.get(`/subcategories/${props.id}/topics?page=${page}`)
+      .then(result => {
+        setTopics(result.data.topics);
+        setPages(prevPages => ({
+          ...prevPages,
+          currentPage: result.data.currentPage,
+          totalPages: result.data.totalPages * 10,
+        }));
+        setLoading(false);
+      })
+      .catch(e => console.log(e));
   };
-
-  useEffect(() => {
-    API.get(`/subcategories/${props.id}/topics`).then(result => {
-      console.log(result.data);
-      setTopics(result.data.topics);
-      setPages(prevPages => ({
-        ...prevPages,
-        currentPage: result.data.currentPage,
-        totalPages: result.data.totalPages * 10,
-      }));
-      setContentLoading(false);
-      setLoading(false);
-    });
-  }, [props.id, setContentLoading]);
 
   return (
     <table className={styles.TopicList}>

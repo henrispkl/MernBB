@@ -1,7 +1,6 @@
 require('dotenv/config');
 const express = require('express');
 const mongoose = require('mongoose');
-const async = require('async');
 
 const topicController = express.Router();
 const Subcategory = require('../models/Subcategory');
@@ -13,9 +12,9 @@ const User = require('../models/User');
 // GET (PUBLIC)
 // get info from a single topic
 topicController.get('/', (req, res) => {
-  const { id = null } = req.query;
-  const { sid = null } = req.query;
+  const { id = null, sid = null, page = 1, limit = 10 } = req.query;
   const queryParams = {};
+  let topicResult = {};
 
   if (id) {
     queryParams._id = id;
@@ -26,6 +25,11 @@ topicController.get('/', (req, res) => {
   Topic.findOne({ ...queryParams })
     .populate({
       path: 'posts',
+      options: {
+        limit,
+        skip: (page - 1) * limit,
+        sort: { createdAt: 1 },
+      },
       populate: {
         path: 'author',
         select: '-password',
@@ -37,7 +41,19 @@ topicController.get('/', (req, res) => {
     })
     .lean()
     .then(topic => {
-      return res.status(200).json({ topic });
+      topicResult = { ...topic, currentPage: page };
+      topicResult.posts.forEach(post => {
+        const topicCount = post.author.topics.length;
+        const postCount = post.author.posts.length;
+
+        post.author.topicCount = topicCount;
+        post.author.postCount = postCount;
+      });
+      return Post.countDocuments({ topic: topic._id });
+    })
+    .then(count => {
+      topicResult.totalPages = Math.ceil(count / limit);
+      return res.status(200).json(topicResult);
     })
     .catch(err =>
       res.status(400).json({ msg: 'Failed to get info of topic', err })

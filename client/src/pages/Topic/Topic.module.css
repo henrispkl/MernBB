@@ -26,7 +26,18 @@
   color: white;
   background-color: #1890ff;
   padding: 10px 30px;
+}
 
+.PaginationTop, .PaginationBottom {
+  padding: 30px;
+}
+
+.PaginationTop {
+  border-bottom: 2px solid #fafafa;
+}
+
+.PaginationBottom {
+  border-top: 2px solid #fafafa;
 }
 
 .AddPost {
@@ -52,4 +63,20 @@
 .AddPostButton {
   margin-top: 20px;
   align-self: flex-end;
+}
+
+.Loading {
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0 0 10px #00276617;
+  width: 100%;
+  padding: 20px;
+}
+
+.Skeleton + .Skeleton {
+  margin-top: 20px;
+}
+
+.PageLoading {
+  padding: 20px;
 }

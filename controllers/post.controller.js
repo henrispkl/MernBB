@@ -1,6 +1,5 @@
 require('dotenv/config');
 const express = require('express');
-const passport = require('passport');
 
 const postController = express.Router();
 const Post = require('../models/Post');

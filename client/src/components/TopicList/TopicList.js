@@ -84,12 +84,11 @@ const TopicList = props => {
         )}
         {loading ? (
           <tr>
-            <td>
+            <td colSpan={3}>
+              <Skeleton active />
               <Skeleton active />
               <Skeleton active />
             </td>
-            <td></td>
-            <td></td>
           </tr>
         ) : (
           topics.map(topic => {
@@ -101,7 +100,9 @@ const TopicList = props => {
                   </span>
                   <span className={styles.TopicNameContainer}>
                     <span className={styles.TopicName}>
-                      <Link href="/">{topic.title}</Link>
+                      <Link href={`/topic?sid=${topic.shortid}`}>
+                        {topic.title}
+                      </Link>
                     </span>
                     <br />
                     <span className={styles.TopicSubtitle}>

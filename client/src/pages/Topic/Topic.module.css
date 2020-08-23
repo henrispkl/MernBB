@@ -1,0 +1,55 @@
+.MainRow {
+  padding-top: 167px;
+}
+
+.Topic {
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0 0 10px #00276617;
+  width: 100%;
+}
+
+.Header {
+  padding: 15px 30px;
+  background-color: black;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+  color: white;
+}
+
+.Title {
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.Subtitle {
+  color: white;
+  background-color: #1890ff;
+  padding: 10px 30px;
+
+}
+
+.AddPost {
+  padding: 50px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: 2px solid #fafafa;
+}
+
+.AddPostArea {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 500px;
+  width: 100%;
+}
+
+.AddPostInput {
+  width: 100%;
+}
+
+.AddPostButton {
+  margin-top: 20px;
+  align-self: flex-end;
+}

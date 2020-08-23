@@ -1,7 +1,7 @@
 require('dotenv/config');
 const express = require('express');
-const passport = require('passport');
 const mongoose = require('mongoose');
+const async = require('async');
 
 const topicController = express.Router();
 const Subcategory = require('../models/Subcategory');
@@ -12,9 +12,33 @@ const User = require('../models/User');
 // [/api/topics] /:id
 // GET (PUBLIC)
 // get info from a single topic
-topicController.get('/:id', (req, res) => {
-  Topic.findById(req.params.id)
-    .then(topic => res.status(200).json({ topic }))
+topicController.get('/', (req, res) => {
+  const { id = null } = req.query;
+  const { sid = null } = req.query;
+  const queryParams = {};
+
+  if (id) {
+    queryParams._id = id;
+  } else if (sid) {
+    queryParams.shortid = sid;
+  }
+
+  Topic.findOne({ ...queryParams })
+    .populate({
+      path: 'posts',
+      populate: {
+        path: 'author',
+        select: '-password',
+        populate: {
+          path: 'usergroup',
+          select: '-users',
+        },
+      },
+    })
+    .lean()
+    .then(topic => {
+      return res.status(200).json({ topic });
+    })
     .catch(err =>
       res.status(400).json({ msg: 'Failed to get info of topic', err })
     );

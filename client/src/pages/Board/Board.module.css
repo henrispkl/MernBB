@@ -6,54 +6,6 @@
   padding: 20px;
 }
 
-.Widget {
-  background-color: white;
-  border-radius: 3px;
-  box-shadow: 0 0 10px #00276617;
-}
-
 .Skeleton {
   margin-top: 40px;
-}
-
-.WidgetTitle {
-  font-size: 16px;
-  font-weight: bold;
-  color: #120338;
-  padding: 15px 30px;
-}
-
-.Stats {
-  display: grid;
-  grid-template-columns: 50% 50%;
-}
-
-.Stat {
-  text-align: center;
-  padding: 25px 0;
-  border-top: 2px solid #fafafa;
-}
-
-.Stat:nth-child(even) {
-  border-left: 2px solid #fafafa;
-}
-
-.StatNumber {
-  color: #120338;
-  font-weight: bold;
-  font-size: 32px;
-}
-
-.NewestUserStat {
-  font-size: 24px;
-}
-
-.StatText {
-  color: #8c8c8c;
-  font-size: 16px;
-}
-
-.StatsLoading {
-  padding: 30px;
-  border-top: 2px solid #fafafa;
 }

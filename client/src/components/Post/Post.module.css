@@ -1,0 +1,50 @@
+.Post {
+  display: flex;
+  padding: 20px;
+}
+
+.Post + .Post {
+  border-top: 2px solid #fafafa;
+}
+
+.User {
+  width: 25%;
+  max-width: 250px;
+  display: flex;
+  flex-direction: column;
+  border-right: 2px solid #fafafa;
+}
+
+.Username {
+  font-size: 20px;
+  align-self: center;
+}
+
+.Usergroup {
+  align-self: center;
+}
+
+.Avatar {
+  width: 125px;
+  align-self: center;
+  margin-top: 10px;
+}
+
+.Avatar img {
+  max-width: 100%;
+  border-radius: 100%;
+}
+
+.Message {
+  margin-left: 20px;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.Date {
+  justify-self: flex-end;
+  color: #bfbfbf;
+  text-align: right;
+}

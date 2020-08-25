@@ -48,3 +48,11 @@
   color: #bfbfbf;
   text-align: right;
 }
+
+.Stats {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  margin-top: 20px;
+  padding: 0 10px;
+}

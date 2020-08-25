@@ -27,15 +27,19 @@ postController.post('/add', (req, res) => {
     author,
     topic,
   });
+  const limit = 10;
 
   newPost
     .save()
-    .then(post => {
+    .then(savedPost => {
+      const post = savedPost.toObject();
+
       User.findByIdAndUpdate(
         author,
         { $push: { posts: post._id } },
         { useFindAndModify: false }
       )
+        .lean()
         .then(() => {
           return Topic.findByIdAndUpdate(
             topic,
@@ -44,6 +48,28 @@ postController.post('/add', (req, res) => {
           );
         })
         .then(() => {
+          return Post.countDocuments({ topic });
+        })
+        .then(count => {
+          post.topicTotalPages = Math.ceil(count / limit);
+
+          return Post.findById(post._id, 'author')
+            .lean()
+            .populate({
+              path: 'author',
+              select: '-password',
+              populate: {
+                path: 'usergroup',
+                select: '-users',
+              },
+            });
+        })
+        .then(populatedPost => {
+          populatedPost.author.topicCount = populatedPost.author.topics.length;
+          populatedPost.author.postCount = populatedPost.author.posts.length;
+
+          post.author = populatedPost.author;
+
           return res.status(200).json({ post });
         });
     })

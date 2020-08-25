@@ -43,7 +43,7 @@ subcategoryController.get('/:id/topics', (req, res) => {
       options: {
         limit,
         skip: (page - 1) * limit,
-        sort: { createdAt: -1 },
+        sort: { updatedAt: -1 },
       },
       populate: {
         path: 'lastpost',

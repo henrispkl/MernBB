@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import styles from './TopicList.module.css';
-import { Skeleton, Pagination, Typography } from 'antd';
+import { Skeleton, Pagination, Typography, Modal } from 'antd';
 import {
   BulbOutlined,
   CommentOutlined,
   MessageOutlined,
   CopyFilled,
-  CopyOutlined,
 } from '@ant-design/icons';
 import API from '../../utils/API';
 import Lastpost from '../Lastpost/Lastpost';
@@ -36,7 +35,12 @@ const TopicList = props => {
         setContentLoading(false);
         setLoading(false);
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        Modal.error({
+          title: 'An error occurred',
+          content: e.message,
+        });
+      });
   }, [props.id, setContentLoading]);
 
   const fetchPage = page => {

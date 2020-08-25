@@ -23,7 +23,7 @@ categoryController.get('/', (req, res) => {
           (subcategory, callback) => {
             // Find the most recent topic and get only the last (most recent) element from the posts array
             Topic.findOne({ subcategory: subcategory._id })
-              .sort({ createdAt: -1 })
+              .sort({ createdAt: 1 })
               .populate({
                 path: 'lastpost',
                 select: '-message',
@@ -34,26 +34,27 @@ categoryController.get('/', (req, res) => {
               })
               .lean()
               .then(topic => {
+                console.log(topic);
                 subcategory.lastpost = topic.lastpost;
-                Topic.countDocuments({
+
+                return Topic.countDocuments({
                   subcategory: subcategory._id,
-                })
-                  .then(topicCount => {
-                    subcategory.topics = topicCount;
-                    return Post.find({ topic: topic._id }, 'topic')
-                      .populate({
-                        path: 'topic',
-                        select: '_id',
-                      })
-                      .lean();
-                  })
-                  .then(posts => {
-                    subcategory.posts = posts.length;
-                    callback();
-                  })
-                  .catch(err => {
-                    callback(err);
-                  });
+                });
+              })
+              .then(topicCount => {
+                subcategory.topics = topicCount;
+                subcategory.posts = 0;
+
+                return Topic.find(
+                  { subcategory: subcategory._id },
+                  'posts'
+                ).lean();
+              })
+              .then(topics => {
+                topics.forEach(topic => {
+                  subcategory.posts += topic.posts.length;
+                });
+                callback();
               })
               .catch(err => {
                 callback(err);

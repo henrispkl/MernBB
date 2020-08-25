@@ -1,0 +1,24 @@
+.AddPost {
+  padding: 50px 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-top: 2px solid #fafafa;
+}
+
+.AddPostArea {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  max-width: 500px;
+  width: 100%;
+}
+
+.AddPostInput {
+  width: 100%;
+}
+
+.AddPostButton {
+  margin-top: 20px;
+  align-self: flex-end;
+}

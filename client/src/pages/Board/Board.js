@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Row, Typography, Col, Skeleton } from 'antd';
+import { Row, Typography, Col, Skeleton, Modal } from 'antd';
 import API from '../../utils/API';
 import Page from '../../components/Page/Page';
 import styles from './Board.module.css';
@@ -20,8 +20,11 @@ const Forum = () => {
         setCategories(result.data.categories);
         return API.get('/stats');
       })
-      .catch(err => {
-        console.log(err);
+      .catch(e => {
+        Modal.error({
+          title: 'An error occurred',
+          content: e.message,
+        });
       });
   }, []);
 

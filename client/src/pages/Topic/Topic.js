@@ -2,32 +2,24 @@ import React, { useEffect, useState } from 'react';
 import styles from './Topic.module.css';
 import Page from '../../components/Page/Page';
 import API from '../../utils/API';
-import {
-  Row,
-  Input,
-  Typography,
-  Button,
-  Col,
-  Pagination,
-  Skeleton,
-} from 'antd';
-import { CommentOutlined, MessageOutlined } from '@ant-design/icons';
+import { Row, Input, Typography, Col, Pagination, Skeleton, Modal } from 'antd';
+import { CommentOutlined } from '@ant-design/icons';
 import Post from '../../components/Post/Post';
 import { useHistory } from 'react-router-dom';
 import WidgetBar from '../../components/WidgetBar/WidgetBar';
-
-// antd
-const { TextArea } = Input;
-const { Title } = Typography;
+import AddPostForm from '../../components/AddPostForm/AddPostForm';
 
 const Topic = props => {
   const [loading, setLoading] = useState(true);
   const [pageLoading, setPageLoading] = useState(false);
   const [topic, setTopic] = useState({});
-  const [message, setMessage] = useState('');
-  const [pages, setPages] = useState(null);
   const queryParams = props.location.search;
   const shortid = new URLSearchParams(queryParams).get('sid');
+  const currentPage = new URLSearchParams(queryParams).get('page');
+  const [pages, setPages] = useState({
+    currentPage,
+    totalPages: 1,
+  });
   const history = useHistory();
 
   if (!queryParams) {
@@ -36,27 +28,58 @@ const Topic = props => {
 
   // Initial load
   useEffect(() => {
-    API.get(`/topics${queryParams}`).then(result => {
-      setTopic(result.data);
-      setPages({
-        currentPage: result.data.currentPage,
-        totalPages: result.data.totalPages * 10,
+    API.get(`/topics${queryParams}`)
+      .then(result => {
+        setTopic(result.data);
+        setPages({
+          currentPage: result.data.currentPage,
+          totalPages: result.data.totalPages,
+        });
+        setLoading(false);
+      })
+      .catch(e => {
+        Modal.error({
+          title: 'An error occurred',
+          content: e.message,
+        });
       });
-      setLoading(false);
-    });
   }, [queryParams]);
 
-  const postReply = () => {
+  const postReply = (message, setMessage, loading, setLoading) => {
+    setLoading(true);
+
     API.post(`/posts/add`, {
       message,
       author: '5f245c890321ee179c3e6c99',
       topic: topic._id,
     })
       .then(result => {
-        // history.push(`/topics?sid=${shortid}&page=${}`);
-        history.go(0);
+        setLoading(false);
+        setMessage('');
+
+        const recentPageNumber = result.data.post.topicTotalPages;
+        console.log(result.data);
+        if (recentPageNumber == currentPage) {
+          // history.go(0);
+          setTopic(prevTopicState => {
+            return {
+              ...prevTopicState,
+              posts: [...prevTopicState.posts, result.data.post],
+            };
+          });
+        } else {
+          console.log(result.data.post.topicTotalPages);
+          history.push(`/topic?sid=${shortid}&page=${recentPageNumber}`);
+        }
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        setLoading(false);
+
+        Modal.error({
+          title: 'An error occurred',
+          content: e.message,
+        });
+      });
   };
 
   const fetchPage = page => {
@@ -67,12 +90,29 @@ const Topic = props => {
         setTopic(result.data);
         setPages({
           currentPage: result.data.currentPage,
-          totalPages: result.data.totalPages * 10,
+          totalPages: result.data.totalPages,
         });
         setPageLoading(false);
+        history.push(`/topic?sid=${shortid}&page=${page}`);
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        Modal.error({
+          title: 'An error occurred',
+          content: e.message,
+        });
+      });
   };
+
+  const pagination = (
+    <div className={styles.Pagination}>
+      <Pagination
+        current={parseInt(pages.currentPage, 10)}
+        total={parseInt(pages.totalPages, 10) * 10}
+        showSizeChanger={false}
+        onChange={fetchPage}
+      />
+    </div>
+  );
 
   return (
     <Page>
@@ -97,16 +137,7 @@ const Topic = props => {
                   <CommentOutlined /> {topic.subtitle}
                 </div>
               )}
-              {pages.totalPages > 10 && (
-                <div className={styles.PaginationTop}>
-                  <Pagination
-                    defaultCurrent={pages.currentPage}
-                    total={pages.totalPages}
-                    showSizeChanger={false}
-                    onChange={fetchPage}
-                  />
-                </div>
-              )}
+              {pages.totalPages > 1 && pagination}
               {pageLoading ? (
                 <div className={styles.PageLoading}>
                   <Skeleton className={styles.Skeleton} active avatar />
@@ -121,38 +152,8 @@ const Topic = props => {
                   return <Post key={post._id} data={post} />;
                 })
               )}
-              {pages.totalPages > 10 && (
-                <div className={styles.PaginationBottom}>
-                  <Pagination
-                    defaultCurrent={pages.currentPage}
-                    total={pages.totalPages}
-                    showSizeChanger={false}
-                    onChange={fetchPage}
-                  />
-                </div>
-              )}
-              <div className={styles.AddPost}>
-                <div className={styles.AddPostArea}>
-                  <Title level={4}>Post a reply</Title>
-                  <TextArea
-                    rows={6}
-                    className={styles.AddPostInput}
-                    value={message}
-                    onChange={e => {
-                      setMessage(e.target.value);
-                    }}
-                  />
-                  <Button
-                    type="primary"
-                    icon={<MessageOutlined />}
-                    size="large"
-                    className={styles.AddPostButton}
-                    onClick={postReply}
-                  >
-                    Post
-                  </Button>
-                </div>
-              </div>
+              {pages.totalPages > 1 && pagination}
+              <AddPostForm postReply={postReply} />
             </div>
           )}
         </Col>

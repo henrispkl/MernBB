@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { createContext, useReducer } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './App.css';
 import { Layout } from 'antd';
@@ -9,23 +9,62 @@ import Footer from './components/Footer/Footer';
 import Board from './pages/Board/Board';
 import Subcategory from './pages/Subcategory/Subcategory';
 import Topic from './pages/Topic/Topic';
+import Login from './pages/Login/Login';
 
-const App = () => (
-  <BrowserRouter>
-    <div className="App">
-      <Layout>
-        <Header />
+// Auth context
+export const AuthContext = createContext();
+const initialState = { user: null, token: null, isAuthenticated: false };
 
-        <Switch>
-          <Route path="/" exact component={Board} />
-          <Route path="/subcategory" component={Subcategory} />
-          <Route path="/topic" component={Topic} />
-        </Switch>
+const reducer = (state, action) => {
+  switch (action.type) {
+    case 'LOGIN':
+      localStorage.setItem('user', JSON.stringify(action.payload.user));
+      localStorage.setItem('token', JSON.stringify(action.payload.token));
+      return {
+        ...state,
+        isAuthenticated: true,
+        user: action.payload.user,
+        token: action.payload.token,
+      };
 
-        <Footer />
-      </Layout>
-    </div>
-  </BrowserRouter>
-);
+    case 'LOGOUT':
+      localStorage.removeItem('user');
+      localStorage.removeItem('token');
+      return {
+        ...state,
+        isAuthenticated: false,
+        user: null,
+        token: null,
+      };
+
+    default:
+      return state;
+  }
+};
+
+const App = () => {
+  const [state, dispatch] = useReducer(reducer, initialState);
+
+  return (
+    <AuthContext.Provider value={{ state, dispatch }}>
+      <BrowserRouter>
+        <div className="App">
+          <Layout>
+            <Header />
+
+            <Switch>
+              <Route path="/" exact component={Board} />
+              <Route path="/subcategory" component={Subcategory} />
+              <Route path="/topic" component={Topic} />
+              <Route path="/login" component={Login} />
+            </Switch>
+
+            <Footer />
+          </Layout>
+        </div>
+      </BrowserRouter>
+    </AuthContext.Provider>
+  );
+};
 
 export default App;

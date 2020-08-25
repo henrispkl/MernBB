@@ -18,7 +18,7 @@ statsController.get('/', (req, res) => {
     })
     .then(userCount => {
       result.users = userCount;
-      return User.findOne().sort({ createdAt: -1 }).lean();
+      return User.findOne().sort({ registerDate: -1 }).lean();
     })
     .then(newestuser => {
       result.newestuser = newestuser.username;

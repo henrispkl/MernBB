@@ -1,7 +1,6 @@
 require('dotenv/config');
 const express = require('express');
 const jwt = require('jsonwebtoken');
-const passport = require('passport');
 const bcrypt = require('bcryptjs');
 const secret = process.env.JWT_SECRET || 'mernBB-default-secret';
 
@@ -65,7 +64,7 @@ userController.post('/register', (req, res) => {
   User.findOne({ email }).then(user => {
     UserGroup.findOne({ auth_level: 2 }).then(usergroup => {
       if (user) {
-        return res.status(400).json({ msg: 'Email already in use' });
+        return res.status(400).json({ msg: 'Email already in use.' });
       } else {
         const newUser = new User({
           username,
@@ -83,7 +82,7 @@ userController.post('/register', (req, res) => {
               .save()
               .then(user => res.status(200).json({ user }))
               .catch(err =>
-                res.status(400).json({ msg: 'Failed to register user', err })
+                res.status(400).json({ msg: 'Failed to register user.', err })
               );
           });
         });
@@ -99,7 +98,7 @@ userController.post('/login', (req, res) => {
   const { email, password } = req.body;
   User.findOne({ email }).then(user => {
     if (!user) {
-      return res.status(404).json({ msg: 'This user does not exists' });
+      return res.status(404).json({ msg: 'This user does not exists.' });
     }
     bcrypt.compare(password, user.password).then(isMatch => {
       if (isMatch) {
@@ -110,7 +109,7 @@ userController.post('/login', (req, res) => {
 
         jwt.sign(payload, secret, { expiresIn: 36000 }, (err, token) => {
           if (err) {
-            res.status(500).json({ msg: 'Error signing token', err });
+            res.status(500).json({ msg: 'Error signing token.', err });
           }
 
           res.status(200).json({
@@ -124,7 +123,7 @@ userController.post('/login', (req, res) => {
           });
         });
       } else {
-        res.status(400).json({ msg: 'Password is incorrect' });
+        res.status(400).json({ msg: 'Password is incorrect.' });
       }
     });
   });

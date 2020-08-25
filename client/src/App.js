@@ -1,4 +1,4 @@
-import React, { createContext, useReducer } from 'react';
+import React, { createContext, useReducer, useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import './App.css';
 import { Layout } from 'antd';
@@ -10,6 +10,7 @@ import Board from './pages/Board/Board';
 import Subcategory from './pages/Subcategory/Subcategory';
 import Topic from './pages/Topic/Topic';
 import Login from './pages/Login/Login';
+import Register from './pages/Register/Register';
 
 // Auth context
 export const AuthContext = createContext();
@@ -45,6 +46,21 @@ const reducer = (state, action) => {
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
+  // Check if there's a token on localStorage
+  useEffect(() => {
+    if (localStorage.getItem('token') && localStorage.getItem('user')) {
+      const token = JSON.parse(localStorage.getItem('token'));
+      const user = JSON.parse(localStorage.getItem('user'));
+      dispatch({
+        type: 'LOGIN',
+        payload: {
+          user,
+          token,
+        },
+      });
+    }
+  }, []);
+
   return (
     <AuthContext.Provider value={{ state, dispatch }}>
       <BrowserRouter>
@@ -57,6 +73,7 @@ const App = () => {
               <Route path="/subcategory" component={Subcategory} />
               <Route path="/topic" component={Topic} />
               <Route path="/login" component={Login} />
+              <Route path="/register" component={Register} />
             </Switch>
 
             <Footer />

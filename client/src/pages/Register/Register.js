@@ -1,11 +1,11 @@
 import React, { useState, useContext } from 'react';
 import Page from '../../components/Page/Page';
-import styles from './Login.module.css';
+import styles from './Register.module.css';
 import { Row, Col, Typography, Form, Input, Button, Modal } from 'antd';
-import { LoginOutlined } from '@ant-design/icons';
+import { UserAddOutlined } from '@ant-design/icons';
 import API from '../../utils/API';
 import { AuthContext } from '../../App';
-import { useHistory, Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 
 // antd
 const { Title } = Typography;
@@ -17,10 +17,17 @@ const Login = props => {
 
   const onFinish = values => {
     setLoading(true);
-    API.post('/users/login', {
+    API.post('/users/register', {
       email: values.email,
+      username: values.username,
       password: values.password,
     })
+      .then(() => {
+        return API.post('/users/login', {
+          email: values.email,
+          password: values.password,
+        });
+      })
       .then(result => {
         dispatch({
           type: 'LOGIN',
@@ -44,14 +51,27 @@ const Login = props => {
     <Page>
       <Row className={styles.MainRow}>
         <Col span={24}>
-          <div className={styles.Login}>
-            <Title level={3}>Login</Title>
+          <div className={styles.Register}>
+            <Title level={3}>Register an account</Title>
             <Form
-              name="login"
+              name="register"
               onFinish={onFinish}
               labelCol={{ span: 4 }}
               style={{ marginTop: '40px' }}
             >
+              <Form.Item
+                label="Username"
+                name="username"
+                rules={[
+                  {
+                    required: true,
+                    message: 'Username must be at least 3 characters long',
+                    min: 3,
+                  },
+                ]}
+              >
+                <Input disabled={loading} />
+              </Form.Item>
               <Form.Item
                 label="Email"
                 name="email"
@@ -71,7 +91,7 @@ const Login = props => {
                 rules={[
                   {
                     required: true,
-                    message: 'Password are at least 6 characters long',
+                    message: 'Password must be at least 6 characters long',
                     min: 6,
                   },
                 ]}
@@ -82,13 +102,10 @@ const Login = props => {
                 <Button
                   type="primary"
                   htmlType="submit"
-                  icon={<LoginOutlined />}
+                  icon={<UserAddOutlined />}
                   disabled={loading}
                 >
-                  Login
-                </Button>
-                <Button type="link" htmlType="button" href="/">
-                  <Link to='/register'>Create new account</Link>
+                  Create account
                 </Button>
               </Form.Item>
             </Form>

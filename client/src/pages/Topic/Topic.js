@@ -1,15 +1,17 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import styles from './Topic.module.css';
 import Page from '../../components/Page/Page';
 import API from '../../utils/API';
-import { Row, Input, Typography, Col, Pagination, Skeleton, Modal } from 'antd';
+import { Row, Col, Pagination, Skeleton, Modal } from 'antd';
 import { CommentOutlined } from '@ant-design/icons';
 import Post from '../../components/Post/Post';
 import { useHistory } from 'react-router-dom';
 import WidgetBar from '../../components/WidgetBar/WidgetBar';
 import AddPostForm from '../../components/AddPostForm/AddPostForm';
+import { AuthContext } from '../../App';
 
 const Topic = props => {
+  const { state } = useContext(AuthContext);
   const [loading, setLoading] = useState(true);
   const [pageLoading, setPageLoading] = useState(false);
   const [topic, setTopic] = useState({});
@@ -25,6 +27,8 @@ const Topic = props => {
   if (!queryParams) {
     history.goBack();
   }
+
+  console.log(state);
 
   // Initial load
   useEffect(() => {
@@ -50,7 +54,7 @@ const Topic = props => {
 
     API.post(`/posts/add`, {
       message,
-      author: '5f245c890321ee179c3e6c99',
+      author: state.user.id,
       topic: topic._id,
     })
       .then(result => {
@@ -58,9 +62,7 @@ const Topic = props => {
         setMessage('');
 
         const recentPageNumber = result.data.post.topicTotalPages;
-        console.log(result.data);
         if (recentPageNumber == currentPage) {
-          // history.go(0);
           setTopic(prevTopicState => {
             return {
               ...prevTopicState,
@@ -68,7 +70,6 @@ const Topic = props => {
             };
           });
         } else {
-          console.log(result.data.post.topicTotalPages);
           history.push(`/topic?sid=${shortid}&page=${recentPageNumber}`);
         }
       })

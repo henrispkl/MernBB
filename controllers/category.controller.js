@@ -34,7 +34,6 @@ categoryController.get('/', (req, res) => {
               })
               .lean()
               .then(topic => {
-                console.log(topic);
                 subcategory.lastpost = topic.lastpost;
 
                 return Topic.countDocuments({

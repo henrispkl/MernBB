@@ -28,8 +28,6 @@ const Topic = props => {
     history.goBack();
   }
 
-  console.log(state);
-
   // Initial load
   useEffect(() => {
     API.get(`/topics${queryParams}`)

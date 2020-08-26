@@ -10,6 +10,8 @@ const { Title } = Typography;
 
 const Subcategory = props => {
   const [contentLoading, setContentLoading] = useState(true);
+  const queryParams = props.location.search;
+  const shortid = new URLSearchParams(queryParams).get('sid');
 
   return (
     <Page>
@@ -36,7 +38,7 @@ const Subcategory = props => {
             style={{ display: contentLoading ? 'none' : 'block' }}
           >
             <TopicList
-              id={props.location.state.id}
+              sid={shortid}
               contentLoading={contentLoading}
               setContentLoading={setContentLoading}
             />

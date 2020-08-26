@@ -22,22 +22,27 @@ subcategoryController.get('/', (req, res) => {
 // [/api/subcategories] /:id
 // GET (PUBLIC)
 // get basic info from a single subcategory
-subcategoryController.get('/:id', (req, res) => {
-  Subcategory.findById(req.params.id)
+subcategoryController.get('/', (req, res) => {
+  const { sid } = req.params;
+  Subcategory.findOne({ shortid: sid })
     .then(subcategory => res.status(200).json({ subcategory }))
     .catch(err =>
       res.status(400).json({ msg: 'Failed to get info of subcategory', err })
     );
 });
 
-// [/api/subcategories] /:id/topics
+// [/api/subcategories] /topics
 // GET (PUBLIC)
 // get all topics from a subcategory
-subcategoryController.get('/:id/topics', (req, res) => {
-  const { page = 1, limit = 10 } = req.query;
+subcategoryController.get('/topics', (req, res) => {
+  const { page = 1, limit = 10, sid = null } = req.query;
   const result = { currentPage: page };
 
-  Subcategory.findById(req.params.id, 'topics')
+  if (!sid) {
+    return res.status(400).json({ msg: 'No shortid provided.' });
+  }
+
+  Subcategory.findOne({ shortid: sid }, 'topics')
     .populate({
       path: 'topics',
       options: {
@@ -64,7 +69,7 @@ subcategoryController.get('/:id/topics', (req, res) => {
       return res.status(200).json(result);
     })
     .catch(err =>
-      res.status(400).json({ msg: 'Failed to get info of subcategory', err })
+      res.status(400).json({ msg: 'Failed to get info of subcategory.', err })
     );
 });
 

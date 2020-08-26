@@ -8,11 +8,10 @@ import Lastpost from '../../components/Lastpost/Lastpost';
 // antd
 const { Link } = Typography;
 
-const Category = props => {
+const Subcategory = props => {
   const history = useHistory();
-
   const goToSubcategory = () => {
-    history.push('/subcategory', {
+    history.push(`/subcategory?sid=${props.data.shortid}`, {
       id: props.data._id,
       name: props.data.name,
       description: props.data.description,
@@ -39,4 +38,4 @@ const Category = props => {
   );
 };
 
-export default Category;
+export default Subcategory;

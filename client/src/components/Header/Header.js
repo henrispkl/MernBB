@@ -6,16 +6,23 @@ import {
   ProfileOutlined,
   FireOutlined,
   UserOutlined,
+  UserAddOutlined,
 } from '@ant-design/icons';
 import styles from './Header.module.css';
 import { AuthContext } from '../../App';
-import { Link } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
 // antd
 const { Header: AntHeader } = Layout;
 
 const Header = () => {
   const { dispatch, state } = useContext(AuthContext);
+  const location = useLocation();
+  let boardsKey = '/';
+
+  if (location.pathname === '/subcategory' || location.pathname === '/topic') {
+    boardsKey = location.pathname;
+  }
 
   const logout = () => {
     Modal.confirm({
@@ -47,31 +54,34 @@ const Header = () => {
         <Col span={12}>
           <Menu
             mode="horizontal"
-            defaultSelectedKeys={['Boards']}
+            activeKey={location.pathname}
+            selectedKeys={location.pathname}
             className={styles.HeaderMenu}
           >
-            <Menu.Item key="Boards" icon={<ProfileOutlined />}>
-              Boards
+            <Menu.Item key={boardsKey} icon={<ProfileOutlined />}>
+              <NavLink to="/">Boards</NavLink>
             </Menu.Item>
-            <Menu.Item key="RecentActivity" icon={<FireOutlined />}>
+            <Menu.Item key="/activity" icon={<FireOutlined />}>
               Recent activity
             </Menu.Item>
-            {state.isAuthenticated ? (
-              <Menu.Item
-                key="Logout"
-                icon={<LogoutOutlined />}
-                onClick={logout}
-              >
+            {state.isAuthenticated && (
+              <Menu.Item icon={<LogoutOutlined />} onClick={logout}>
                 Logout
-              </Menu.Item>
-            ) : (
-              <Menu.Item key="Login" icon={<LoginOutlined />}>
-                <Link to="/login">Login</Link>
               </Menu.Item>
             )}
             {state.isAuthenticated && (
-              <Menu.Item key="User" icon={<UserOutlined />}>
-                <Link to="/">{state.user.username}</Link>
+              <Menu.Item key="/user" icon={<UserOutlined />}>
+                <NavLink to="/">{state.user.username}</NavLink>
+              </Menu.Item>
+            )}
+            {!state.isAuthenticated && (
+              <Menu.Item key="/login" icon={<LoginOutlined />}>
+                <NavLink to="/login">Login</NavLink>
+              </Menu.Item>
+            )}
+            {!state.isAuthenticated && (
+              <Menu.Item key="/register" icon={<UserAddOutlined />}>
+                <NavLink to="/register">Register</NavLink>
               </Menu.Item>
             )}
           </Menu>

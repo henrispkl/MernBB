@@ -24,7 +24,7 @@ const TopicList = props => {
 
   // Initial load
   useEffect(() => {
-    API.get(`/subcategories/${props.id}/topics`)
+    API.get(`/subcategories/topics?sid=${props.sid}`)
       .then(result => {
         setTopics(result.data.topics);
         setPages(prevPages => ({
@@ -38,7 +38,7 @@ const TopicList = props => {
       .catch(e => {
         Modal.error({
           title: 'An error occurred',
-          content: e.message,
+          content: e.response.data.msg,
         });
       });
   }, [props.id, setContentLoading]);
@@ -46,7 +46,7 @@ const TopicList = props => {
   const fetchPage = page => {
     setLoading(true);
 
-    API.get(`/subcategories/${props.id}/topics?page=${page}`)
+    API.get(`/subcategories/topics?sid=${props.sid}&page=${page}`)
       .then(result => {
         setTopics(result.data.topics);
         setPages(prevPages => ({
@@ -56,7 +56,12 @@ const TopicList = props => {
         }));
         setLoading(false);
       })
-      .catch(e => console.log(e));
+      .catch(e => {
+        Modal.error({
+          title: 'An error occurred',
+          content: e.response.data.msg,
+        });
+      });
   };
 
   return (

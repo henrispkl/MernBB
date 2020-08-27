@@ -18,6 +18,10 @@ const subcategorySchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Category',
   },
+  lastpost: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Post',
+  },
   topics: [
     {
       type: mongoose.Schema.Types.ObjectId,

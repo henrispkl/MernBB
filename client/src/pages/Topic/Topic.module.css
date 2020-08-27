@@ -30,8 +30,15 @@
 
 .Pagination {
   padding: 30px;
-  border-bottom: 2px solid #fafafa;
+}
+
+.Posts {
   border-top: 2px solid #fafafa;
+  border-bottom: 2px solid #fafafa;
+}
+
+.Posts + .Pagination {
+  border-bottom: 2px solid #fafafa;
 }
 
 .Loading {

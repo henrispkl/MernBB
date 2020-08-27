@@ -10,13 +10,14 @@ import {
 } from '@ant-design/icons';
 import styles from './Header.module.css';
 import { AuthContext } from '../../App';
-import { NavLink, useLocation } from 'react-router-dom';
+import { NavLink, useLocation, useHistory } from 'react-router-dom';
 
 // antd
 const { Header: AntHeader } = Layout;
 
 const Header = () => {
   const { dispatch, state } = useContext(AuthContext);
+  const history = useHistory();
   const location = useLocation();
   let boardsKey = '/';
 
@@ -31,6 +32,7 @@ const Header = () => {
         dispatch({
           type: 'LOGOUT',
         });
+        history.push('/');
       },
     });
   };
@@ -55,7 +57,7 @@ const Header = () => {
           <Menu
             mode="horizontal"
             activeKey={location.pathname}
-            selectedKeys={location.pathname}
+            selectedKeys={[location.pathname]}
             className={styles.HeaderMenu}
           >
             <Menu.Item key={boardsKey} icon={<ProfileOutlined />}>

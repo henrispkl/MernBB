@@ -11,43 +11,21 @@ import Subcategory from './pages/Subcategory/Subcategory';
 import Topic from './pages/Topic/Topic';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
+import reducer from './utils/reducer';
 
 // Auth context
 export const AuthContext = createContext();
-const initialState = { user: null, token: null, isAuthenticated: false };
-
-const reducer = (state, action) => {
-  switch (action.type) {
-    case 'LOGIN':
-      localStorage.setItem('user', JSON.stringify(action.payload.user));
-      localStorage.setItem('token', JSON.stringify(action.payload.token));
-      return {
-        ...state,
-        isAuthenticated: true,
-        user: action.payload.user,
-        token: action.payload.token,
-      };
-
-    case 'LOGOUT':
-      localStorage.removeItem('user');
-      localStorage.removeItem('token');
-      return {
-        ...state,
-        isAuthenticated: false,
-        user: null,
-        token: null,
-      };
-
-    default:
-      return state;
-  }
+const initialState = {
+  user: null,
+  token: null,
+  isAuthenticated: false
 };
 
 const App = () => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
-  // Check if there's a token on localStorage
   useEffect(() => {
+    // Check if there's a token on localStorage and authenticate with it
     if (localStorage.getItem('token') && localStorage.getItem('user')) {
       const token = JSON.parse(localStorage.getItem('token'));
       const user = JSON.parse(localStorage.getItem('user'));

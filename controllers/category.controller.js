@@ -1,6 +1,7 @@
 require('dotenv/config');
 const async = require('async');
 const express = require('express');
+const passport = require('passport');
 
 const categoryController = express.Router();
 const Category = require('../models/Category');
@@ -13,7 +14,18 @@ const Post = require('../models/Post');
 categoryController.get('/', (req, res) => {
   Category.find()
     .lean()
-    .populate('subcategories', 'name description shortid')
+    .populate({
+      path: 'subcategories',
+      select: '-category',
+      populate: {
+        path: 'lastpost',
+        select: '-message',
+        populate: {
+          path: 'author',
+          select: '-posts -topics -password',
+        },
+      },
+    })
     .then(categories => {
       // Loop through each category
       categories.forEach(category => {
@@ -21,25 +33,9 @@ categoryController.get('/', (req, res) => {
         async.each(
           category.subcategories,
           (subcategory, callback) => {
-            // Find the most recent topic and get only the last (most recent) element from the posts array
-            Topic.findOne({ subcategory: subcategory._id })
-              .sort({ createdAt: 1 })
-              .populate({
-                path: 'lastpost',
-                select: '-message',
-                populate: {
-                  path: 'author',
-                  select: 'username',
-                },
-              })
-              .lean()
-              .then(topic => {
-                subcategory.lastpost = topic.lastpost;
-
-                return Topic.countDocuments({
-                  subcategory: subcategory._id,
-                });
-              })
+            Topic.countDocuments({
+              subcategory: subcategory._id,
+            })
               .then(topicCount => {
                 subcategory.topics = topicCount;
                 subcategory.posts = 0;
@@ -87,7 +83,7 @@ categoryController.get('/:id', (req, res) => {
 // [/api/categories] /add
 // POST (PRIVATE)
 // add a new category
-categoryController.post('/add', (req, res) => {
+categoryController.post('/add', passport.authenticate('jwt', {session: false}), (req, res) => {
   const { name } = req.body;
   const newCategory = new Category({
     name,
@@ -102,7 +98,7 @@ categoryController.post('/add', (req, res) => {
 // [/api/categories] /update
 // POST (PRIVATE)
 // update a category
-categoryController.post('/update', (req, res) => {
+categoryController.post('/update', passport.authenticate('jwt', {session: false}), (req, res) => {
   Category.findByIdAndUpdate(req.body.id, req.body, {
     useFindAndModify: false,
   })
@@ -117,7 +113,7 @@ categoryController.post('/update', (req, res) => {
 // [/api/categories] /delete
 // DELETE (PRIVATE)
 // delete a category
-categoryController.post('/delete', (req, res) => {
+categoryController.post('/delete', passport.authenticate('jwt', {session: false}), (req, res) => {
   Category.findByIdAndDelete(req.body.id)
     .then(() => res.status(200).json({ msg: 'Category deleted' }))
     .catch(err =>

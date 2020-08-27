@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Row, Typography, Col, Skeleton, Modal } from 'antd';
 import API from '../../utils/API';
 import Page from '../../components/Page/Page';

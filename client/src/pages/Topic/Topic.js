@@ -147,9 +147,11 @@ const Topic = props => {
                   <Skeleton className={styles.Skeleton} active avatar />
                 </div>
               ) : (
-                topic.posts.map(post => {
-                  return <Post key={post._id} data={post} />;
-                })
+                <div className={styles.Posts}>
+                  {topic.posts.map(post => {
+                    return <Post key={post._id} data={post} />;
+                  })}
+                </div>
               )}
               {pages.totalPages > 1 && pagination}
               <AddPostForm postReply={postReply} />

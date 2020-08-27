@@ -41,7 +41,7 @@ const TopicList = props => {
           content: e.response.data.msg,
         });
       });
-  }, [props.id, setContentLoading]);
+  }, [props.sid, setContentLoading]);
 
   const fetchPage = page => {
     setLoading(true);

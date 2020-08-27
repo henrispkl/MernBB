@@ -3,7 +3,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  border-top: 2px solid #fafafa;
 }
 
 .AddPostArea {
@@ -21,4 +20,9 @@
 .AddPostButton {
   margin-top: 20px;
   align-self: flex-end;
+}
+
+.AuthMessage {
+  text-align: center;
+  padding: 40px 0;
 }

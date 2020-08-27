@@ -1,6 +1,6 @@
 require('dotenv/config');
 const express = require('express');
-const async = require('async');
+const passport = require('passport');
 
 const subcategoryController = express.Router();
 const Subcategory = require('../models/Subcategory');
@@ -76,51 +76,63 @@ subcategoryController.get('/topics', (req, res) => {
 // [/api/subcategories] /add
 // POST (PRIVATE)
 // add a new subcategory
-subcategoryController.post('/add', (req, res) => {
-  const { name, description, category } = req.body;
-  const newSubcategory = new Subcategory({
-    name,
-    description,
-    category,
-  });
+subcategoryController.post(
+  '/add',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const { name, description, category } = req.body;
+    const newSubcategory = new Subcategory({
+      name,
+      description,
+      category,
+    });
 
-  newSubcategory
-    .save()
-    .then(subcategory => {
-      Category.findById(category).then(c => {
-        c.subcategories.push(newSubcategory);
-        c.save().then(() => {
-          res.status(200).json({ subcategory });
+    newSubcategory
+      .save()
+      .then(subcategory => {
+        Category.findById(category).then(c => {
+          c.subcategories.push(newSubcategory);
+          c.save().then(() => {
+            res.status(200).json({ subcategory });
+          });
         });
-      });
-    })
-    .catch(err => res.json({ msg: 'Failed to add a new subcategory', err }));
-});
+      })
+      .catch(err => res.json({ msg: 'Failed to add a new subcategory', err }));
+  }
+);
 
 // [/api/subcategories] /update
 // POST (PRIVATE)
 // update a subcategory
-subcategoryController.post('/update', (req, res) => {
-  Subcategory.findByIdAndUpdate(req.body.id, req.body, {
-    useFindAndModify: false,
-  })
-    .then(subcategory =>
-      res.status(200).json({ msg: 'Subcategory updated', subcategory })
-    )
-    .catch(err =>
-      res.status(400).json({ msg: 'Failed to update subcategory', err })
-    );
-});
+subcategoryController.post(
+  '/update',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Subcategory.findByIdAndUpdate(req.body.id, req.body, {
+      useFindAndModify: false,
+    })
+      .then(subcategory =>
+        res.status(200).json({ msg: 'Subcategory updated', subcategory })
+      )
+      .catch(err =>
+        res.status(400).json({ msg: 'Failed to update subcategory', err })
+      );
+  }
+);
 
 // [/api/subcategories] /delete
 // DELETE (PRIVATE)
 // delete a subcategory
-subcategoryController.post('/delete', (req, res) => {
-  Subcategory.findByIdAndDelete(req.body.id)
-    .then(() => res.status(200).json({ msg: 'Subcategory deleted' }))
-    .catch(err =>
-      res.status(400).json({ msg: 'Failed to delete subcategory', err })
-    );
-});
+subcategoryController.post(
+  '/delete',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Subcategory.findByIdAndDelete(req.body.id)
+      .then(() => res.status(200).json({ msg: 'Subcategory deleted' }))
+      .catch(err =>
+        res.status(400).json({ msg: 'Failed to delete subcategory', err })
+      );
+  }
+);
 
 module.exports = subcategoryController;

@@ -5,6 +5,9 @@ const Topic = require('../models/Topic');
 const Post = require('../models/Post');
 const User = require('../models/User');
 
+// [/api/stats] /
+// GET (PUBLIC)
+// get main stats
 statsController.get('/', (req, res) => {
   const result = {};
   Topic.countDocuments()
@@ -26,5 +29,9 @@ statsController.get('/', (req, res) => {
     })
     .catch(err => res.status(400).json({ err }));
 });
+
+// [/api/stats] /
+// GET (PUBLIC)
+// get main stats
 
 module.exports = statsController;

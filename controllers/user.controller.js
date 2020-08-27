@@ -3,6 +3,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const secret = process.env.JWT_SECRET || 'mernBB-default-secret';
+const passport = require('passport');
 
 const userController = express.Router();
 const User = require('../models/User');
@@ -37,7 +38,7 @@ userController.get('/:id', (req, res) => {
 // [/api/users] /update
 // POST (PRIVATE)
 // update an user
-userController.post('/update', (req, res) => {
+userController.post('/update', passport.authenticate('jwt', {session: false}), (req, res) => {
   User.findByIdAndUpdate(req.body.id, req.body, {
     useFindAndModify: false,
   })
@@ -48,7 +49,7 @@ userController.post('/update', (req, res) => {
 // [/api/users] /delete
 // DELETE (PRIVATE)
 // delete an user
-userController.post('/delete', (req, res) => {
+userController.post('/delete',passport.authenticate('jwt', {session: false}),  (req, res) => {
   User.findByIdAndDelete(req.body.id)
     .then(() => res.status(200).json({ msg: 'User deleted' }))
     .catch(err => res.status(400).json({ msg: 'Failed to delete user', err }));

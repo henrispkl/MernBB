@@ -13,36 +13,57 @@ const Post = props => {
   const finalDate = convertDate(dateContent);
 
   return (
-    <div className={styles.Post}>
-      <div className={styles.User}>
+    <div
+      className={
+        props.minimal ? [styles.Post, styles.Minimal].join(' ') : styles.Post
+      }
+    >
+      <div
+        className={
+          props.minimal
+            ? [styles.User, styles.MinimalUser].join(' ')
+            : styles.User
+        }
+      >
         <div className={styles.Username}>
           <Link href="/">{props.data.author.username}</Link>
         </div>
         <div className={styles.Usergroup}>
           {props.data.author.usergroup.name}
         </div>
-        <div className={styles.Avatar}>
+        <div
+          className={
+            props.minimal
+              ? [styles.Avatar, styles.MinimalAvatar].join(' ')
+              : styles.Avatar
+          }
+        >
           <img src={NoAvatar} alt="" />
         </div>
-        <div className={styles.Stats}>
-          <span>
-            <b>Topics:</b> {props.data.author.topicCount}
-          </span>
-          <span>
-            <b>Posts:</b> {props.data.author.postCount}
-          </span>
-          <span>
-            <b>Register date:</b> <br />
-            {convertDate(props.data.author.registerDate)}
-          </span>
-        </div>
+        {!props.minimal && (
+          <div className={styles.Stats}>
+            <span>
+              <b>Topics:</b> {props.data.author.topicCount}
+            </span>
+            <span>
+              <b>Posts:</b> {props.data.author.postCount}
+            </span>
+            <span>
+              <b>Register date:</b> <br />
+              {convertDate(props.data.author.registerDate)}
+            </span>
+          </div>
+        )}
       </div>
       <div className={styles.Message}>
         <div className={styles.MessageContent}>{props.data.message}</div>
-        <time timestamp={date.toString()} className={styles.Date}>
-          {finalDate}
-        </time>
+        {!props.notimestamp && (
+          <time timestamp={date.toString()} className={styles.Date}>
+            {finalDate}
+          </time>
+        )}
       </div>
+      <div id={props.data.shortid} />
     </div>
   );
 };

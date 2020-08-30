@@ -14,7 +14,6 @@ const UserGroup = require('../models/UserGroup');
 // retrieve all users
 userController.get('/', (req, res) => {
   User.find()
-    .select('-password')
     .populate('usergroup')
     .then(users => {
       res.status(200).json({
@@ -28,7 +27,6 @@ userController.get('/', (req, res) => {
 // get info from a single user
 userController.get('/:id', (req, res) => {
   User.findById(req.params.id)
-    .select('-password')
     .then(user => res.status(200).json({ user }))
     .catch(err =>
       res.status(400).json({ msg: 'Failed to get info of user', err })
@@ -38,22 +36,34 @@ userController.get('/:id', (req, res) => {
 // [/api/users] /update
 // POST (PRIVATE)
 // update an user
-userController.post('/update', passport.authenticate('jwt', {session: false}), (req, res) => {
-  User.findByIdAndUpdate(req.body.id, req.body, {
-    useFindAndModify: false,
-  })
-    .then(user => res.status(200).json({ msg: 'User updated', user }))
-    .catch(err => res.status(400).json({ msg: 'Failed to update user', err }));
-});
+userController.post(
+  '/update',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    User.findByIdAndUpdate(req.body.id, req.body, {
+      useFindAndModify: false,
+    })
+      .then(user => res.status(200).json({ msg: 'User updated', user }))
+      .catch(err =>
+        res.status(400).json({ msg: 'Failed to update user', err })
+      );
+  }
+);
 
 // [/api/users] /delete
 // DELETE (PRIVATE)
 // delete an user
-userController.post('/delete',passport.authenticate('jwt', {session: false}),  (req, res) => {
-  User.findByIdAndDelete(req.body.id)
-    .then(() => res.status(200).json({ msg: 'User deleted' }))
-    .catch(err => res.status(400).json({ msg: 'Failed to delete user', err }));
-});
+userController.post(
+  '/delete',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    User.findByIdAndDelete(req.body.id)
+      .then(() => res.status(200).json({ msg: 'User deleted' }))
+      .catch(err =>
+        res.status(400).json({ msg: 'Failed to delete user', err })
+      );
+  }
+);
 
 // Authentication routes
 
@@ -97,7 +107,7 @@ userController.post('/register', (req, res) => {
 // login a user
 userController.post('/login', (req, res) => {
   const { email, password } = req.body;
-  User.findOne({ email }).then(user => {
+  User.findOne({ email }, '+password').then(user => {
     if (!user) {
       return res.status(404).json({ msg: 'This user does not exists.' });
     }

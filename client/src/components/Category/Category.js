@@ -13,7 +13,7 @@ const Category = props => {
     <table className={styles.CategoryTable}>
       <thead className={styles.Titles}>
         <tr>
-          <th>
+          <th className={styles.CategoryName}>
             <EditOutlined /> {props.data.name}
           </th>
           <th className={styles.Topics}>
@@ -22,7 +22,7 @@ const Category = props => {
           <th className={styles.Posts}>
             <CommentOutlined /> Posts
           </th>
-          <th>
+          <th className={styles.LastPost}>
             <MessageOutlined /> Last post
           </th>
         </tr>

@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
 import styles from './TopicList.module.css';
-import { Skeleton, Pagination, Typography, Modal } from 'antd';
+import { Skeleton, Pagination, Typography, Modal, Empty, Button } from 'antd';
 import {
   BulbOutlined,
   CommentOutlined,
   MessageOutlined,
   CopyFilled,
+  FormOutlined,
 } from '@ant-design/icons';
 import API from '../../utils/API';
 import Lastpost from '../Lastpost/Lastpost';
+import { Link as RouterLink } from 'react-router-dom';
 
 // antd
 const { Link } = Typography;
 
 const TopicList = props => {
-  const { contentLoading, setContentLoading } = props;
+  const { contentLoading, setContentLoading, setInfo } = props;
   const [topics, setTopics] = useState([]);
   const [loading, setLoading] = useState(true);
   const [pages, setPages] = useState({
@@ -27,21 +29,24 @@ const TopicList = props => {
     API.get(`/subcategories/topics?sid=${props.sid}`)
       .then(result => {
         setTopics(result.data.topics);
-        setPages(prevPages => ({
-          ...prevPages,
+        setInfo({
+          name: result.data.name,
+          description: result.data.description,
+        });
+        setPages({
           currentPage: result.data.currentPage,
           totalPages: result.data.totalPages * 10,
-        }));
+        });
         setContentLoading(false);
         setLoading(false);
       })
       .catch(e => {
         Modal.error({
           title: 'An error occurred',
-          content: e.response.data.msg,
+          content: e.message,
         });
       });
-  }, [props.sid, setContentLoading]);
+  }, [props.sid, setContentLoading, setInfo]);
 
   const fetchPage = page => {
     setLoading(true);
@@ -49,17 +54,16 @@ const TopicList = props => {
     API.get(`/subcategories/topics?sid=${props.sid}&page=${page}`)
       .then(result => {
         setTopics(result.data.topics);
-        setPages(prevPages => ({
-          ...prevPages,
+        setPages({
           currentPage: result.data.currentPage,
           totalPages: result.data.totalPages * 10,
-        }));
+        });
         setLoading(false);
       })
       .catch(e => {
         Modal.error({
           title: 'An error occurred',
-          content: e.response.data.msg,
+          content: e.message,
         });
       });
   };
@@ -80,20 +84,28 @@ const TopicList = props => {
         </tr>
       </thead>
       <tbody className={styles.Body}>
-        {!contentLoading && (
-          <tr>
-            <td>
-              <Pagination
-                defaultCurrent={pages.currentPage}
-                total={pages.totalPages}
-                showSizeChanger={false}
-                onChange={fetchPage}
-              />
-            </td>
-            <td></td>
-            <td></td>
-          </tr>
-        )}
+        <tr>
+          <td colSpan="3">
+            <div className={styles.ActionRow}>
+              {!contentLoading && topics.length > 0 && pages.totalPages > 0 && (
+                <Pagination
+                  defaultCurrent={pages.currentPage}
+                  total={pages.totalPages}
+                  showSizeChanger={false}
+                  onChange={fetchPage}
+                />
+              )}
+              <RouterLink
+                to={`/newtopic?sid=${props.sid}`}
+                className={styles.NewTopic}
+              >
+                <Button type="primary" icon={<FormOutlined />}>
+                  Create new topic
+                </Button>
+              </RouterLink>
+            </div>
+          </td>
+        </tr>
         {loading ? (
           <tr>
             <td colSpan={3}>
@@ -102,25 +114,26 @@ const TopicList = props => {
               <Skeleton active />
             </td>
           </tr>
-        ) : (
+        ) : topics.length > 0 ? (
           topics.map(topic => {
             return (
               <tr key={topic._id} className={styles.Topic}>
-                <td className={styles.TopicInfo}>
-                  <span className={styles.TopicIcon}>
-                    <CopyFilled />
-                  </span>
-                  <span className={styles.TopicNameContainer}>
-                    <span className={styles.TopicName}>
-                      <Link href={`/topic?sid=${topic.shortid}`}>
-                        {topic.title}
-                      </Link>
+                <td>
+                  <div className={styles.TopicInfo}>
+                    <span className={styles.TopicIcon}>
+                      <CopyFilled />
                     </span>
-                    <br />
-                    <span className={styles.TopicSubtitle}>
-                      {topic.subtitle}
+                    <span className={styles.TopicNameContainer}>
+                      <span className={styles.TopicName}>
+                        <Link href={`/topic?sid=${topic.shortid}`}>
+                          {topic.title}
+                        </Link>
+                      </span>
+                      <span className={styles.TopicSubtitle}>
+                        {topic.subtitle}
+                      </span>
                     </span>
-                  </span>
+                  </div>
                 </td>
                 <td className={styles.TopicPosts}>{topic.posts.length}</td>
                 <Lastpost
@@ -130,6 +143,15 @@ const TopicList = props => {
               </tr>
             );
           })
+        ) : (
+          <tr>
+            <td colSpan={3}>
+              <Empty
+                description="No topics in this subcategory"
+                className={styles.NoTopics}
+              />
+            </td>
+          </tr>
         )}
       </tbody>
     </table>

@@ -42,6 +42,7 @@
 
 .TopicInfo {
   display: flex;
+  align-items: center;
 }
 
 .TopicIcon {
@@ -51,6 +52,9 @@
 
 .TopicNameContainer {
   margin-left: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .TopicName {
@@ -70,4 +74,18 @@
 
 .TopicLastpost {
   padding: 20px 10px !important;
+}
+
+.NoTopics {
+  width: 100%;
+  padding: 200px 0;
+}
+
+.ActionRow {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.NewTopic:nth-child(2) {
+  margin-left: 20px;
 }

@@ -87,7 +87,7 @@ const Login = props => {
                 >
                   Login
                 </Button>
-                <Button type="link" htmlType="button" href="/">
+                <Button type="link" htmlType="button">
                   <Link to='/register'>Create new account</Link>
                 </Button>
               </Form.Item>

@@ -3,6 +3,11 @@
   padding: 20px;
 }
 
+.Minimal {
+  border: 2px solid #fafafa;
+  border-radius: 5px;
+}
+
 .Post + .Post {
   border-top: 2px solid #fafafa;
 }
@@ -13,6 +18,11 @@
   display: flex;
   flex-direction: column;
   border-right: 2px solid #fafafa;
+}
+
+.MinimalUser {
+  width: 20%;
+  max-width: 150px;
 }
 
 .Username {
@@ -28,6 +38,10 @@
   width: 125px;
   align-self: center;
   margin-top: 10px;
+}
+
+.MinimalAvatar {
+  width: 75px;
 }
 
 .Avatar img {

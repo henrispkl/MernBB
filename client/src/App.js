@@ -4,6 +4,7 @@ import './App.css';
 import { Layout } from 'antd';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import reducer from './utils/reducer';
 
 // Pages
 import Board from './pages/Board/Board';
@@ -11,14 +12,16 @@ import Subcategory from './pages/Subcategory/Subcategory';
 import Topic from './pages/Topic/Topic';
 import Login from './pages/Login/Login';
 import Register from './pages/Register/Register';
-import reducer from './utils/reducer';
+import Activity from './pages/Activity/Activity';
+import NewTopic from './pages/NewTopic/NewTopic';
+import Page404 from './pages/Page404/Page404';
 
 // Auth context
 export const AuthContext = createContext();
 const initialState = {
   user: null,
   token: null,
-  isAuthenticated: false
+  isAuthenticated: false,
 };
 
 const App = () => {
@@ -52,6 +55,9 @@ const App = () => {
               <Route path="/topic" component={Topic} />
               <Route path="/login" component={Login} />
               <Route path="/register" component={Register} />
+              <Route path="/activity" component={Activity} />
+              <Route path="/newtopic" component={NewTopic} />
+              <Route path="*" exact component={Page404} />
             </Switch>
 
             <Footer />

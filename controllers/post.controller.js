@@ -69,7 +69,6 @@ postController.post(
               .lean()
               .populate({
                 path: 'author',
-                select: '-password',
                 populate: {
                   path: 'usergroup',
                   select: '-users',

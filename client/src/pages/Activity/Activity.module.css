@@ -1,0 +1,40 @@
+.MainRow {
+  padding-top: 167px;
+}
+
+.Activity {
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0 0 10px #00276617;
+  width: 100%;
+  margin: auto;
+  padding: 40px;
+}
+
+.ActivityDiv {
+  border-left: 2px solid #40a9ff;
+  padding: 10px 15px;
+  padding-right: 0;
+}
+
+.ActivityDiv + .ActivityDiv {
+  margin-top: 60px;
+}
+
+.Info {
+  display: flex;
+  justify-content: space-between;
+  font-size: 16px;
+}
+
+.PostInfo {
+  margin-bottom: 20px;
+}
+
+.Date {
+  color: #bfbfbf;
+}
+
+.Icon {
+  margin-right: 5px;
+}

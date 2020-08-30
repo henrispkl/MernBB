@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './Lastpost.module.css';
 import NoAvatar from '../../assets/no-avatar-small.jpg';
-import { Typography } from 'antd';
+import { Typography, Empty } from 'antd';
 import convertDate from '../../utils/convertDate';
 
 // antd
@@ -11,6 +11,19 @@ const Lastpost = props => {
   let classNames = [styles.Lastpost];
   if (props.className) {
     classNames.push(props.className);
+  }
+
+  // If there's no data
+  if (!props.data) {
+    return (
+      <td className={styles.NoData}>
+        <Empty
+          image={Empty.PRESENTED_IMAGE_SIMPLE}
+          style={{ margin: '0px' }}
+          description='No last post'
+        />
+      </td>
+    );
   }
 
   // Format date

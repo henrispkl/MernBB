@@ -23,8 +23,8 @@ const Footer = () => {
         <Col span={12}>
           <Title level={2}>MERN Bulletin Board</Title>
           <Text>
-            This is a bulletin board built using the MERN (Mongoose, Express,
-            React and Node) stack and Ant Design as an UI framework. Using JSON
+            This is a bulletin board built using the MERN stack (Mongoose, Express,
+            React and Node) and Ant Design as the UI framework. Using JSON
             Web Tokens, the user can{' '}
             <Link href='/register'>create an account</Link> and <Link href='/register'>authenticate</Link>,
             consuming an API with CRUDs and other operations for categories,

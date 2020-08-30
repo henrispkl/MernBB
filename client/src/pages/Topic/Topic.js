@@ -3,9 +3,9 @@ import styles from './Topic.module.css';
 import Page from '../../components/Page/Page';
 import API from '../../utils/API';
 import { Row, Col, Pagination, Skeleton, Modal } from 'antd';
-import { CommentOutlined } from '@ant-design/icons';
+import { CommentOutlined, CaretLeftOutlined } from '@ant-design/icons';
 import Post from '../../components/Post/Post';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import WidgetBar from '../../components/WidgetBar/WidgetBar';
 import AddPostForm from '../../components/AddPostForm/AddPostForm';
 import { AuthContext } from '../../App';
@@ -32,6 +32,7 @@ const Topic = props => {
   useEffect(() => {
     API.get(`/topics${queryParams}`)
       .then(result => {
+        console.log(result.data);
         setTopic(result.data);
         setPages({
           currentPage: result.data.currentPage,
@@ -50,11 +51,19 @@ const Topic = props => {
   const postReply = (message, setMessage, loading, setLoading) => {
     setLoading(true);
 
-    API.post(`/posts/add`, {
-      message,
-      author: state.user.id,
-      topic: topic._id,
-    })
+    API.post(
+      `/posts/add`,
+      {
+        message,
+        author: state.user.id,
+        topic: topic._id,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${state.token}`,
+        },
+      }
+    )
       .then(result => {
         setLoading(false);
         setMessage('');
@@ -73,7 +82,6 @@ const Topic = props => {
       })
       .catch(e => {
         setLoading(false);
-
         Modal.error({
           title: 'An error occurred',
           content: e.message,
@@ -130,6 +138,9 @@ const Topic = props => {
             <div className={styles.Topic}>
               <div className={styles.Header}>
                 <div className={styles.Title}>{topic.title && topic.title}</div>
+                <Link to={`/subcategory?sid=${topic.subcategory.shortid}`}>
+                  <CaretLeftOutlined /> {topic.subcategory.name}
+                </Link>
               </div>
               {topic.subtitle && (
                 <div className={styles.Subtitle}>

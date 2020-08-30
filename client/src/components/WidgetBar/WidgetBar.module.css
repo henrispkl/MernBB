@@ -4,6 +4,10 @@
   box-shadow: 0 0 10px #00276617;
 }
 
+.Widget + .Widget {
+  margin-top: 40px;
+}
+
 .WidgetTitle {
   font-size: 16px;
   font-weight: bold;
@@ -41,7 +45,36 @@
   font-size: 16px;
 }
 
-.StatsLoading {
+.WidgetLoading {
   padding: 30px;
   border-top: 2px solid #fafafa;
+}
+
+.Topics {
+  border-top: 2px solid #fafafa;
+}
+
+.RecentTopic {
+  padding: 10px 30px;
+  display: flex;
+  align-items: center;
+}
+
+.RecentTopic + .RecentTopic {
+  border-top: 2px solid #fafafa;
+}
+
+.RecentTopic img {
+  width: 32px;
+  height: 32px;
+  border-radius: 100%;
+  margin-right: 10px;
+}
+
+.Date {
+  color: #bfbfbf;
+}
+
+.Icon {
+  margin-right: 5px;
 }

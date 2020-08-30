@@ -1,0 +1,13 @@
+.NewTopic {
+  background-color: white;
+  border-radius: 3px;
+  box-shadow: 0 0 10px #00276617;
+  width: 100%;
+  max-width: 800px;
+  margin: auto;
+  padding: 40px;
+}
+
+.MainRow {
+  padding-top: 167px;
+}

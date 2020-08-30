@@ -10,6 +10,7 @@ const { Title } = Typography;
 
 const Subcategory = props => {
   const [contentLoading, setContentLoading] = useState(true);
+  const [info, setInfo] = useState({ name: '', description: '' });
   const queryParams = props.location.search;
   const shortid = new URLSearchParams(queryParams).get('sid');
 
@@ -17,10 +18,10 @@ const Subcategory = props => {
     <Page>
       <Row>
         <Title
-          title={props.location.state.description}
+          title={info.description}
           style={{ color: 'white', margin: '60px 0' }}
         >
-          {props.location.state.name}
+          {info.name}
         </Title>
       </Row>
       <Row>
@@ -41,6 +42,7 @@ const Subcategory = props => {
               sid={shortid}
               contentLoading={contentLoading}
               setContentLoading={setContentLoading}
+              setInfo={setInfo}
             />
           </div>
         </Col>

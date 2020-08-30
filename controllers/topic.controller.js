@@ -33,7 +33,6 @@ topicController.get('/', (req, res) => {
       },
       populate: {
         path: 'author',
-        select: '-password',
         populate: {
           path: 'usergroup',
           select: '-users',
@@ -54,6 +53,10 @@ topicController.get('/', (req, res) => {
     })
     .then(count => {
       topicResult.totalPages = Math.ceil(count / limit);
+      return Subcategory.findById(topicResult.subcategory, 'name shortid');
+    })
+    .then(subcategory => {
+      topicResult.subcategory = subcategory;
       return res.status(200).json(topicResult);
     })
     .catch(err =>
@@ -101,6 +104,7 @@ topicController.post(
           subcategory,
           {
             $push: { topics: newTopicId },
+            $set: { lastpost: newPostId },
           },
           { useFindAndModify: false }
         );

@@ -20,9 +20,14 @@ categoryController.get('/', (req, res) => {
       populate: {
         path: 'lastpost',
         select: '-message',
+        // options: {
+        //   sort: {
+        //     createdAt: 'desc',
+        //   },
+        // },
         populate: {
           path: 'author',
-          select: '-posts -topics -password',
+          select: '-posts -topics',
         },
       },
     })
@@ -52,7 +57,7 @@ categoryController.get('/', (req, res) => {
                 callback();
               })
               .catch(err => {
-                callback(err);
+                console.log(err);
               });
           },
           err => {
@@ -83,42 +88,54 @@ categoryController.get('/:id', (req, res) => {
 // [/api/categories] /add
 // POST (PRIVATE)
 // add a new category
-categoryController.post('/add', passport.authenticate('jwt', {session: false}), (req, res) => {
-  const { name } = req.body;
-  const newCategory = new Category({
-    name,
-  });
+categoryController.post(
+  '/add',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    const { name } = req.body;
+    const newCategory = new Category({
+      name,
+    });
 
-  newCategory
-    .save()
-    .then(category => res.status(200).json({ category }))
-    .catch(err => res.json({ msg: 'Failed to add a new category', err }));
-});
+    newCategory
+      .save()
+      .then(category => res.status(200).json({ category }))
+      .catch(err => res.json({ msg: 'Failed to add a new category', err }));
+  }
+);
 
 // [/api/categories] /update
 // POST (PRIVATE)
 // update a category
-categoryController.post('/update', passport.authenticate('jwt', {session: false}), (req, res) => {
-  Category.findByIdAndUpdate(req.body.id, req.body, {
-    useFindAndModify: false,
-  })
-    .then(category =>
-      res.status(200).json({ msg: 'Category updated', category })
-    )
-    .catch(err =>
-      res.status(400).json({ msg: 'Failed to update category', err })
-    );
-});
+categoryController.post(
+  '/update',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Category.findByIdAndUpdate(req.body.id, req.body, {
+      useFindAndModify: false,
+    })
+      .then(category =>
+        res.status(200).json({ msg: 'Category updated', category })
+      )
+      .catch(err =>
+        res.status(400).json({ msg: 'Failed to update category', err })
+      );
+  }
+);
 
 // [/api/categories] /delete
 // DELETE (PRIVATE)
 // delete a category
-categoryController.post('/delete', passport.authenticate('jwt', {session: false}), (req, res) => {
-  Category.findByIdAndDelete(req.body.id)
-    .then(() => res.status(200).json({ msg: 'Category deleted' }))
-    .catch(err =>
-      res.status(400).json({ msg: 'Failed to delete category', err })
-    );
-});
+categoryController.post(
+  '/delete',
+  passport.authenticate('jwt', { session: false }),
+  (req, res) => {
+    Category.findByIdAndDelete(req.body.id)
+      .then(() => res.status(200).json({ msg: 'Category deleted' }))
+      .catch(err =>
+        res.status(400).json({ msg: 'Failed to delete category', err })
+      );
+  }
+);
 
 module.exports = categoryController;

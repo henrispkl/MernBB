@@ -11,6 +11,7 @@ const Topic = require('../models/Topic');
 // GET (PUBLIC)
 // retrieve all subcategories
 subcategoryController.get('/', (req, res) => {
+  console.log('hit / route');
   Subcategory.find()
     .populate('topics')
     .populate('topics.posts')
@@ -19,13 +20,15 @@ subcategoryController.get('/', (req, res) => {
     });
 });
 
-// [/api/subcategories] /:id
+// [/api/subcategories] /one
 // GET (PUBLIC)
 // get basic info from a single subcategory
-subcategoryController.get('/', (req, res) => {
-  const { sid } = req.params;
-  Subcategory.findOne({ shortid: sid })
-    .then(subcategory => res.status(200).json({ subcategory }))
+subcategoryController.get('/info', (req, res) => {
+  const { sid } = req.query;
+  Subcategory.findOne({ shortid: sid }, '-topics')
+    .then(subcategory => {
+      return res.status(200).json(subcategory);
+    })
     .catch(err =>
       res.status(400).json({ msg: 'Failed to get info of subcategory', err })
     );
@@ -42,7 +45,7 @@ subcategoryController.get('/topics', (req, res) => {
     return res.status(400).json({ msg: 'No shortid provided.' });
   }
 
-  Subcategory.findOne({ shortid: sid }, 'topics')
+  Subcategory.findOne({ shortid: sid })
     .populate({
       path: 'topics',
       options: {
@@ -62,6 +65,9 @@ subcategoryController.get('/topics', (req, res) => {
     .lean()
     .then(subcategory => {
       result.topics = subcategory.topics;
+      result.name = subcategory.name;
+      result.description = subcategory.description;
+
       return Topic.countDocuments({ subcategory: subcategory._id });
     })
     .then(count => {

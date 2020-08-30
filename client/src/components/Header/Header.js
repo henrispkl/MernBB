@@ -64,7 +64,7 @@ const Header = () => {
               <NavLink to="/">Boards</NavLink>
             </Menu.Item>
             <Menu.Item key="/activity" icon={<FireOutlined />}>
-              Recent activity
+              <NavLink to="/activity">Recent activity</NavLink>
             </Menu.Item>
             {state.isAuthenticated && (
               <Menu.Item icon={<LogoutOutlined />} onClick={logout}>

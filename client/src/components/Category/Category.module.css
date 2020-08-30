@@ -5,6 +5,14 @@
   box-shadow: 0 0 10px #00276617;
 }
 
+.CategoryTable + .CategoryTable {
+  margin-top: 40px;
+}
+
+.CategoryName {
+  width: 60%;
+}
+
 .Titles th {
   font-size: 16px;
   padding: 15px 30px;
@@ -25,6 +33,12 @@
 
 .Topics,
 .Posts {
+  width: 10%;
   padding: 15px 5px !important;
   text-align: center;
+}
+
+
+.LastPost {
+  width: 20%;
 }

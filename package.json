@@ -4,6 +4,7 @@
   "description": "A bulletin board forum built with the MERN stack.",
   "main": "index.js",
   "scripts": {
+    "postinstall": "cd client && npm install",
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js",
     "dev": "concurrently 'nodemon server.js' 'cd client && npm start'",

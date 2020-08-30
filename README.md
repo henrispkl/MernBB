@@ -8,7 +8,7 @@ A forum board built with Node/MongoDB/React
 
 Using the MERN stack, this is a bulletin board where users can authenticate and post topics and reply to them in different categories divided by subcategories. The user can authenticate with JWT to start consuming an API with CRUDs and other operations for categories, subcategories, users, user groups, topics and posts.
 
-[Live example](https://medicare-app.herokuapp.com/)
+[Live example](https://mernbb.herokuapp.com/)
 
 ### :pushpin: Technologies used
 
@@ -27,6 +27,7 @@ Using the MERN stack, this is a bulletin board where users can authenticate and 
 * Manage user groups, categories and subcategories in the dashboard
 * WYSIWYG text editor
 * Delete and topics and posts
+* Make everything responsive
 * ... a lot of other things!
 
 ## :zap: Getting Started
@@ -41,6 +42,8 @@ Using the MERN stack, this is a bulletin board where users can authenticate and 
 
       cd MernBB/
       npm install
+
+* Dont forget to rename the `.env.example` file to `.env`, add a MongoDB connection string and change the JWT secret.
 
 * Build the project
 

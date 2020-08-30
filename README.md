@@ -43,7 +43,9 @@ Using the MERN stack, this is a bulletin board where users can authenticate and 
       cd MernBB/
       npm install
 
-* Dont forget to rename the `.env.example` file to `.env`, add a MongoDB connection string and change the JWT secret.
+* Rename the `.env.example` file to `.env`, add a MongoDB connection string and change the JWT secret.
+
+      mv .env.example .env
 
 * Build the project
 

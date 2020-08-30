@@ -36,7 +36,7 @@ Using the MERN stack, this is a bulletin board where users can authenticate and 
 
 * Clone this repo
 
-      https://github.com/henrispkl/MernBB.git
+      git clone https://github.com/henrispkl/MernBB.git
 
 * Go to the folder and install all dependencies
 

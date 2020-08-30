@@ -1,6 +1,5 @@
 import React, { createContext, useReducer, useEffect } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
-import './App.css';
 import { Layout } from 'antd';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';

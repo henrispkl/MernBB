@@ -6,6 +6,7 @@ const app = express();
 const port = process.env.PORT || 80;
 const controllers = require('./controllers');
 const passport = require('passport');
+const path = require('path');
 
 // Middleware for JSON body parsing
 app.use(express.json());
@@ -26,6 +27,13 @@ app.use('/api/subcategories', controllers.subcategoryController);
 app.use('/api/topics', controllers.topicController);
 app.use('/api/posts', controllers.postController);
 app.use('/api/stats', controllers.statsController);
+
+
+// If no API routes are hit, send the build version of the React client
+app.use(express.static(path.join(__dirname, './client/build')));
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, './client/build/index.html'));
+});
 
 // MongoDB connection
 const connectDb = () => {

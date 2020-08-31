@@ -2,10 +2,12 @@
 
 A forum board built with React, Ant Design, Express, Node and MongoDB
 
+
 ![alt text](./splash.jpg)
 
 ## :pencil: Description 
 
+*[Documentação em PT-BR](./README-pt-br.md)*
 Using the MERN stack, this is a bulletin board where users can authenticate and post topics and reply to them in different categories divided by subcategories. The user can authenticate with JWT to start consuming an API with CRUDs and other operations for categories, subcategories, users, user groups, topics and posts.
 
 [Live example](https://mernbb.herokuapp.com/)

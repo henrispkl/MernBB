@@ -1,6 +1,6 @@
 # MernBB
 
-A forum board built with Node/MongoDB/React
+A forum board built with React, Ant Design, Express, Node and MongoDB
 
 ![alt text](./splash.jpg)
 

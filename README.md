@@ -28,6 +28,7 @@ Using the MERN stack, this is a bulletin board where users can authenticate and 
 * Manage user groups, categories and subcategories in the dashboard
 * WYSIWYG text editor
 * Delete and topics and posts
+* Add proper testing files and prop-types
 * ... a lot of other things!
 
 ## :zap: Getting Started

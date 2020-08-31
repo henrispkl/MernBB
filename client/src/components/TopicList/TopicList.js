@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styles from './TopicList.module.css';
 import { Skeleton, Pagination, Typography, Modal, Empty, Button } from 'antd';
 import {
@@ -11,6 +11,7 @@ import {
 import API from '../../utils/API';
 import Lastpost from '../Lastpost/Lastpost';
 import { Link as RouterLink } from 'react-router-dom';
+import { AuthContext } from '../../App';
 
 // antd
 const { Link } = Typography;
@@ -23,6 +24,7 @@ const TopicList = props => {
     currentPage: null,
     totalPages: null,
   });
+  const { state } = useContext(AuthContext);
 
   // Initial load
   useEffect(() => {
@@ -95,14 +97,16 @@ const TopicList = props => {
                   onChange={fetchPage}
                 />
               )}
-              <RouterLink
-                to={`/newtopic?sid=${props.sid}`}
-                className={styles.NewTopic}
-              >
-                <Button type="primary" icon={<FormOutlined />}>
-                  Create new topic
-                </Button>
-              </RouterLink>
+              {state.isAuthenticated && (
+                <RouterLink
+                  to={`/newtopic?sid=${props.sid}`}
+                  className={styles.NewTopic}
+                >
+                  <Button type="primary" icon={<FormOutlined />}>
+                    Create new topic
+                  </Button>
+                </RouterLink>
+              )}
             </div>
           </td>
         </tr>

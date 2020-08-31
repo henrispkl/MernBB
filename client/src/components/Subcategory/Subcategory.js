@@ -18,8 +18,6 @@ const Subcategory = props => {
     });
   };
 
-  console.log(props.data);
-
   return (
     <tr className={styles.Subcategory}>
       <td className={styles.Info}>

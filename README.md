@@ -21,13 +21,13 @@ Using the MERN stack, this is a bulletin board where users can authenticate and 
 
 ### :rocket: Roadmap
 
+* Make everything responsive
 * Edit user profile
 * View user profile
 * Dashboard for administrators
 * Manage user groups, categories and subcategories in the dashboard
 * WYSIWYG text editor
 * Delete and topics and posts
-* Make everything responsive
 * ... a lot of other things!
 
 ## :zap: Getting Started
@@ -57,13 +57,13 @@ Using the MERN stack, this is a bulletin board where users can authenticate and 
 
       npm run dev
 
-* Running in build mode
+* Executing in production
 
       npm start
 
 ## :+1: How to contribute
 
-To contribute to this project, create pull requests and issues and I'll gladly take a look at them. :)
+To contribute to this project, feel free to create pull requests and issues and I'll gladly take a look at them. :)
 
 ## :page_facing_up: License
 
